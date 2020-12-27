@@ -56,23 +56,13 @@ def lecteurinfo() :                 #prevision méteo
    
 def reglageauto():    # a finir
     engine.say("Réglage automatique")
+    engine.say("La température a été réglée sur")
+    cheh=str(temperatureenmemoire)+" degrés"
+    engine.say(cheh) 
+    engine.say("Dis pas merci chakal ça sert a rien je peut pas te répondre")
     engine.runAndWait()
-    x= '°'
-    x.encode('cp1252')
-    with open('info_meteo.csv', newline='') as  read_obj:
-        csv.register_dialect('custom', delimiter=' ',doublequote=True, quoting=csv.QUOTE_NONE, escapechar=' ')
-        spamreader = csv.reader( read_obj,dialect='custom')
-        #print(read_obj)
-        i=1
-        while i<2 :
-            for row in spamreader:  
-                for field in row:
-                    if x in field:
-                        try:
-                            print(field)
-                        except:
-                            pass
-            i=i+1
+
+                           
                     
                         
 
@@ -120,6 +110,6 @@ while 1 : #menu
        
     else :
         print("Merci de m'avoir utilisé, aurevoir")
-        engine.say("Merci de m'avoir utilisé, aurevoir")
+        engine.say("Merci de m'avoir utilisé, aurevoir PS: Matheo est le plus BG je le kiff")
         engine.runAndWait()
         break
