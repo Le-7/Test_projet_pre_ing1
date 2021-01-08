@@ -10,6 +10,15 @@ engine.setProperty('rate',145) #Vitesse de lecture
 temperatureenmemoire= 19
 
 def iaquiparle() :   #message d accueil
+    print("""
+
+   _____ _        _   _               __  __      _               ___    ___  
+  / ____| |      | | (_)             |  \/  |    | |             |__ \  / _ \ 
+ | (___ | |_ __ _| |_ _  ___  _ __   | \  / | ___| |_ ___  ___      ) || | | |
+  \___ \| __/ _` | __| |/ _ \| '_ \  | |\/| |/ _ \ __/ _ \/ _ \    / / | | | |
+  ____) | || (_| | |_| | (_) | | | | | |  | |  __/ ||  __/ (_) |  / /_ | |_| |
+ |_____/ \__\__,_|\__|_|\___/|_| |_| |_|  |_|\___|\__\___|\___/  |____(_)___/                                                                                                                                                                                                                                                                                                                                                                              
+""")
     engine.say("Wesh la zone c'est moi la plus conne des IA, veuillez choisir une fonction")
     engine.runAndWait()
 
