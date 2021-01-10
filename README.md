@@ -1,7 +1,7 @@
 # Test_web_scraping
 Ptit test posé pour le projet.
 
-Les différentes caractéristiques :  Température(ressentie), Vent moyen en km/h, Plus forte rafale en km/h, Pression en hPa, pluie sous 3 h.
+Les différentes caractéristiques :  Température(ressentie), Vent moyen en km/h, Plus forte rafale en km/h, Pression en hPa, précipitations sous 3 h.
 
 Fini :
 
@@ -16,9 +16,9 @@ Fini :
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 A finir :
 
--nouvelles fonctions
+-Nouvelles fonctions
 
 -Vraie interface
 
--test pour voir les bugs en .exe
+-Test pour voir les bugs en .exe
 
