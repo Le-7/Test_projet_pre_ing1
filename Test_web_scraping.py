@@ -1,9 +1,9 @@
-import requests
+import requests                           #importation des différentes bibliothèques
 from bs4 import BeautifulSoup
 import csv
 from datetime import datetime
 import pyttsx3
-engine = pyttsx3.init()
+engine = pyttsx3.init()        #initialisation de la synthèse voale
 voice = engine.getProperty('voices')[2] #Voix francaise
 engine.setProperty('voice', voice.id)
 engine.setProperty('rate',145) #Vitesse de lecture
@@ -19,7 +19,7 @@ def iaquiparle() :   #message d accueil
   ____) | || (_| | |_| | (_) | | | | | |  | |  __/ ||  __/ (_) |  / /_ | |_| |
  |_____/ \__\__,_|\__|_|\___/|_| |_| |_|  |_|\___|\__\___|\___/  |____(_)___/                                                                                                                                                                                                                                                                                                                                                                              
 """)
-    engine.say("Wesh la zone c'est moi la plus conne des IA, veuillez choisir une fonction")
+    engine.say("Bonjour c'est moi la meilleure des IA, veuillez choisir une fonction")
     engine.runAndWait()
 
 
@@ -40,27 +40,27 @@ def lecteurinfo() :                 #prevision méteo
     b.encode('cp1252')
 
     with open('info_meteo.csv', newline='') as  read_obj:  #ouverture du fichier en mode lecture seule avec parametres personalisés
-        csv.register_dialect('custom', delimiter=' ',doublequote=True, quoting=csv.QUOTE_NONE, escapechar=' ')
-        spamreader = csv.reader( read_obj,dialect='custom') #lecture du contenue
+        csv.register_dialect('custom', delimiter=' ',doublequote=True, quoting=csv.QUOTE_NONE, escapechar=' ')  # création des parametres personalisés (consulter doc pour plus d info)
+        spamreader = csv.reader( read_obj,dialect='custom') #lecture du contenue avec les parametres 'custom' créés juste avant
         #print(read_obj)
-        for row in spamreader:  
+        for row in spamreader:  #bon ca normalement faut juste traduire mais bon : pour chaque 'field'(champs de texte) de chaque 'row'(rangée)
             for field in row:
-                if a in field: 
+                if a in field:  #on regarde si 'a'(la date) est dans le champ
                     i=1
                     while i<101 :
                         try:     #gestion des exceptions
-                            spamreader.__next__()
+                            spamreader.__next__()                   #si a est dedans on prend les 100 champs suivants
                             for field  in spamreader.__next__():
-                                if b in field: 
+                                if b in field:                      #si 'b'(heures) est dans les 100 champs suivants on affiche les 6 lignes(caractéristiques) apres 'b' 
                                     j=1
                                     while j<7 :
-                                        print("caractéristique : ",j)
+                                        print("caractéristique : ",j) #chiffre de la caractéristique
                                         print(spamreader.__next__())  #affichage des caractéristique
                                         j=j+1
                         except:
-                            pass
+                            pass       #si il y a un bug alors on passe la procédure pour que l erreur ne soit pas fatal, d'où le 'try' avant 
                         i=i+1
-    engine.say("Et voila tes prévisions chakal")
+    engine.say("Et voila tes prévisions")
     engine.runAndWait()
    
 def reglageauto():    # a finir
@@ -76,7 +76,7 @@ def reglageauto():    # a finir
                         
 
 def tempenmemoire():    #changement de la température favorites
-    global temperatureenmemoire
+    global temperatureenmemoire     #on change la variable de facon globale dans cette procédure
     engine.say("Veuillez saisir la nouvelle température souhaitée")
     engine.runAndWait()
     try :
@@ -87,20 +87,20 @@ def tempenmemoire():    #changement de la température favorites
         engine.say("Valeur saisie non valable, je fait exploser ta maison ")
         engine.runAndWait()
 
-def creationbasededonnés():        #web scraping         
-    req = requests.get('https://www.meteo60.fr/previsions-meteo-france-paris.html') 
-    soup = BeautifulSoup(req.text, "lxml")
-    jour =soup.findAll('td', {'class':'jour'})
-    with open("info_meteo.csv", 'w', newline=None ) as out_file:
-        csv.register_dialect('custom', delimiter=' ',doublequote=True, quoting=csv.QUOTE_NONE, escapechar=' ')
-        writer = csv.writer(out_file,'custom')
-        informations = soup.find('table', {'class':'previsions'}).findAll('tbody', {'class':'ligne_jour'})
+def creationbasededonnées():        #web scraping         
+    req = requests.get('https://www.meteo60.fr/previsions-meteo-france-paris.html')  #URL du site ciblé
+    soup = BeautifulSoup(req.text, "lxml")       #on créé une soupe de données, lire doc de BS
+    jour =soup.findAll('td', {'class':'jour'})   #on cherche les données voulue
+    with open("info_meteo.csv", 'w', newline=None ) as out_file:   #on creer un fichier csv avec nos données
+        csv.register_dialect('custom', delimiter=' ',doublequote=True, quoting=csv.QUOTE_NONE, escapechar=' ')   #parametres personalisés
+        writer = csv.writer(out_file,'custom')  #on initialise le writer avec nos parametres donnés avant
+        informations = soup.find('table', {'class':'previsions'}).findAll('tbody', {'class':'ligne_jour'})  #on cherche dans la soup les informaations nous étant utiles
         for informations in informations :
-            row = informations.text.strip()
-            writer.writerow(row)
+            row = informations.text.strip() #les rangées prennent comme valeurs les informations
+            writer.writerow(row)   #on ecrit les rangées dans le fichier
 
 #programme principal
-creationbasededonnés()
+creationbasededonnées()
 iaquiparle()
 print(" 1 = Date et heure \n 2 = prévisions météo  \n 3 = réglage automatique de la température \n 4 = Changer température en mémoire \n Tout autre caractere = quitter")
 while 1 : #menu
