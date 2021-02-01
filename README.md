@@ -11,7 +11,9 @@ Fini :
 
 -Interface console
 
--Fonctions de prévisions(complexe) + autres fonctions basiques
+-Fonctions de prévisions(complexe)+ autres fonctions basiques
+
+-Réglage automatique de la temperature en fonction de la personne grâce a du machine learning et de la détection vidéo
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 A finir :
