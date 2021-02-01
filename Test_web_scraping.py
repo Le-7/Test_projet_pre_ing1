@@ -65,6 +65,7 @@ def lecteurinfo() :                 #prevision méteo
                         i=i+1
     engine.say("Et voila tes prévisions")
     engine.runAndWait()
+
 def creationbasededonnées():        #web scraping         
     req = requests.get('https://www.meteo60.fr/previsions-meteo-france-paris.html')  #URL du site ciblé
     soup = BeautifulSoup(req.text, "lxml")       #on créé une soupe de données, lire doc de BS
@@ -87,19 +88,19 @@ def detection():
   print("p1 : Matheo Costa a comme temperature favorite :",temperatureenmemoire1,"°C \n")
 
   
-  # Paraillement.
+  # Pareillement.
   personne2_image = face_recognition.load_image_file("Orcan_Og.jpg")
   personne2_face_encoding = face_recognition.face_encodings(personne2_image)[0]
   temperatureenmemoire2= 84
   print("p2 : Orcan Og a comme temperature favorite :",temperatureenmemoire2,"°C \n")
 
-   # Paraillement.
+   # Pareillement.
   personne3_image = face_recognition.load_image_file("Matheo_Pereira.jpg")
   personne3_face_encoding = face_recognition.face_encodings(personne3_image)[0]
   temperatureenmemoire3= 44
   print("p3 : Matheo Pereira a comme temperature favorite :",temperatureenmemoire3,"°C \n")
 
-   # Paraillement.
+   # Pareillement.
   personne4_image = face_recognition.load_image_file("Anissa_Aït-Chadi.jpg")
   personne4_face_encoding = face_recognition.face_encodings(personne4_image)[0]
   temperatureenmemoire4= 23
