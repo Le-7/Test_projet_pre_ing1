@@ -3,11 +3,14 @@ from bs4 import BeautifulSoup
 import csv
 from datetime import datetime
 import pyttsx3
+import face_recognition
+import cv2
+import numpy as np
 engine = pyttsx3.init()        #initialisation de la synthèse voale
 voice = engine.getProperty('voices')[2] #Voix francaise
 engine.setProperty('voice', voice.id)
 engine.setProperty('rate',145) #Vitesse de lecture
-temperatureenmemoire= 19
+
 
 def iaquiparle() :   #message d accueil
     print("""
@@ -62,31 +65,6 @@ def lecteurinfo() :                 #prevision méteo
                         i=i+1
     engine.say("Et voila tes prévisions")
     engine.runAndWait()
-   
-def reglageauto():    # a finir
-    engine.say("Réglage automatique")
-    engine.say("La température a été réglée sur")
-    cheh=str(temperatureenmemoire)+" degrés"
-    engine.say(cheh) 
-    engine.say("Dis pas merci chakal ça sert a rien je peut pas te répondre")
-    engine.runAndWait()
-
-                           
-                    
-                        
-
-def tempenmemoire():    #changement de la température favorites
-    global temperatureenmemoire     #on change la variable de facon globale dans cette procédure
-    engine.say("Veuillez saisir la nouvelle température souhaitée")
-    engine.runAndWait()
-    try :
-        temperatureenmemoire = float(input("Nouvelle température : \n"))
-        print("Nouvelle température enregistrée : ",temperatureenmemoire,'°C')
-    except :
-        print("Valeur saisie non valable")
-        engine.say("Valeur saisie non valable, je fait exploser ta maison ")
-        engine.runAndWait()
-
 def creationbasededonnées():        #web scraping         
     req = requests.get('https://www.meteo60.fr/previsions-meteo-france-paris.html')  #URL du site ciblé
     soup = BeautifulSoup(req.text, "lxml")       #on créé une soupe de données, lire doc de BS
@@ -99,10 +77,129 @@ def creationbasededonnées():        #web scraping
             row = informations.text.strip() #les rangées prennent comme valeurs les informations
             writer.writerow(row)   #on ecrit les rangées dans le fichier
 
+def detection():
+  video_capture = cv2.VideoCapture(0)
+
+    # Création d'un profil avec encodage du visage dans le systeme neuronale.
+  personne1_image = face_recognition.load_image_file("Matheo_Costa.jpg")
+  personne1_face_encoding = face_recognition.face_encodings(personne1_image)[0]
+  temperatureenmemoire1= 78
+  print("p1 : Matheo Costa a comme temperature favorite :",temperatureenmemoire1,"°C \n")
+
+  
+  # Paraillement.
+  personne2_image = face_recognition.load_image_file("Orcan_Og.jpg")
+  personne2_face_encoding = face_recognition.face_encodings(personne2_image)[0]
+  temperatureenmemoire2= 84
+  print("p2 : Orcan Og a comme temperature favorite :",temperatureenmemoire2,"°C \n")
+
+   # Paraillement.
+  personne3_image = face_recognition.load_image_file("Matheo_Pereira.jpg")
+  personne3_face_encoding = face_recognition.face_encodings(personne3_image)[0]
+  temperatureenmemoire3= 44
+  print("p3 : Matheo Pereira a comme temperature favorite :",temperatureenmemoire3,"°C \n")
+
+   # Paraillement.
+  personne4_image = face_recognition.load_image_file("Anissa_Aït-Chadi.jpg")
+  personne4_face_encoding = face_recognition.face_encodings(personne4_image)[0]
+  temperatureenmemoire4= 23
+  print("p4 : Anissa Aït-Chadi a comme temperature favorite :",temperatureenmemoire4,"°C \n")
+
+
+  engine.say("Pour quitter le mode détection veuillez sélectionner la fenetre et appuyer sur la lettre 'Q'")
+  engine.runAndWait()
+
+    # Création des champs de données avec visages, noms et temperaturse favorites 
+  known_face_encodings = [
+      personne1_face_encoding,
+      personne2_face_encoding,
+      personne3_face_encoding,
+      personne4_face_encoding
+    ]
+  known_face_names = [
+      "Matheo Costa",
+      "Orcan Og",
+      "Matheo Pereira",
+      "Anissa Ait-Chadi"
+  ]
+
+  temppref =[
+      temperatureenmemoire1,
+      temperatureenmemoire2,
+      temperatureenmemoire3,
+      temperatureenmemoire4   
+  ]
+
+    # Initialisation de variables utiles au fonctionnement
+  face_locations = []
+  face_encodings = []
+  face_names = []
+  process_this_frame = True
+
+  while True:
+        # On lit frame par frame la vidéo
+        ret, frame = video_capture.read()
+
+        # On réajuste l'image en format 1/4 pour une plus grande rapidité d'execution
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+
+        # On convertit l'image de format BGR(que OpenCV utilise) en RGB (que face_recognition utilise)
+        rgb_small_frame = small_frame[:, :, ::-1]
+
+        # On utilise que les frames qui nous interessent pour gagner du temps
+        if process_this_frame:
+            # On cherche tous les visages et leurs localisations dans chaque frame 
+            face_locations = face_recognition.face_locations(rgb_small_frame)
+            face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+            face_names = []
+            for face_encoding in face_encodings:
+                # On regarde si les visages sont connus
+                matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                name = "Inconnu"
+                face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                best_match_index = np.argmin(face_distances)
+                if matches[best_match_index]:
+                    name = known_face_names[best_match_index]
+                    tempeaff = temppref[best_match_index] 
+                    print(name," détecté(e), temperature changée à :",tempeaff,"°C\n")
+                face_names.append(name)
+
+        process_this_frame = not process_this_frame
+
+
+        # On affiche les résultats
+        for (top, right, bottom, left), name in zip(face_locations, face_names):
+            # On remet l'image au format initiale (on l'avais passé en 1/4)
+            top *= 4
+            right *= 4
+            bottom *= 4
+            left *= 4
+
+            # On met un rectangle pour chaque visage
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+            # On met une étiquette avec le nom pour chaque visage
+            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            font = cv2.FONT_HERSHEY_DUPLEX
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+          
+
+        # on affiche le résultat
+        cv2.imshow('Video', frame)
+
+        # On appuie sur 'Q' pour casser la boucle infinie
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # On relache et détruit les fenetres
+  video_capture.release()
+  cv2.destroyAllWindows()
+    
 #programme principal
 creationbasededonnées()
 iaquiparle()
-print(" 1 = Date et heure \n 2 = prévisions météo  \n 3 = réglage automatique de la température \n 4 = Changer température en mémoire \n Tout autre caractere = quitter")
+print(" 1 = Date et heure \n 2 = prévisions météo  \n 3 = réglage automatique de la température \n Tout autre caractere = quitter")
 while 1 : #menu
     menu= str(input('Veuillez saisir le chiffre correspondant a la fonction souhaitée \n'))
     if menu == '1' :
@@ -111,11 +208,7 @@ while 1 : #menu
         print("Les différentes caractéristiques : \n 1 : Température(ressentie) \n 2 : rien \n 3 : Vent moyen en km/h \n 4 : Plus forte rafale en km/h \n 5 : Pression en hPa \n 6 : pluie sous 3 h \n")
         lecteurinfo()
     elif menu == '3' : 
-        print("La température en mémoire est de : ",temperatureenmemoire,'°C')
-        reglageauto()
-    elif menu == '4' :
-        print("La température en mémoire est de : ",temperatureenmemoire,'°C')
-        tempenmemoire()
+        detection()
        
     else :
         print("Merci de m'avoir utilisé, aurevoir")
