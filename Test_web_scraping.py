@@ -1,4 +1,4 @@
-import requests                           #importation des différentes bibliothèques
+import requests                           #importation des différentes bibliothèques (certains bouts de codes ont été empruntés directement de ces bibliothèques) 
 from bs4 import BeautifulSoup
 import csv
 from datetime import datetime
@@ -39,8 +39,8 @@ def lecteurinfo() :                 #prevision méteo
     engine.say("Veuillez saisir l'heure")
     engine.runAndWait()
     b= str(input('Veuillez saisir l heure sous format 0h (Commence a 1h et incrémenté de 3):\n'))
-    a.encode('cp1252')  #encodage dans le meme format que le fichier csv (on peut voir l encodage avec le print en commentaire plus en bas)
-    b.encode('cp1252')
+    #a.encode('cp1252')  #encodage dans le meme format que le fichier csv (on peut voir l encodage avec le print en commentaire plus en bas)
+    #b.encode('cp1252')
 
     with open('info_meteo.csv', newline='') as  read_obj:  #ouverture du fichier en mode lecture seule avec parametres personalisés
         csv.register_dialect('custom', delimiter=' ',doublequote=True, quoting=csv.QUOTE_NONE, escapechar=' ')  # création des parametres personalisés (consulter doc pour plus d info)
@@ -103,32 +103,42 @@ def detection():
    # Pareillement.
   personne4_image = face_recognition.load_image_file("Anissa_Aït-Chadi.jpg")
   personne4_face_encoding = face_recognition.face_encodings(personne4_image)[0]
-  temperatureenmemoire4= 23
+  temperatureenmemoire4= 24
   print("p4 : Anissa Aït-Chadi a comme temperature favorite :",temperatureenmemoire4,"°C \n")
+
+   # Pareillement.
+  personne5_image = face_recognition.load_image_file("Antoine_Warlet.jpg")
+  personne5_face_encoding = face_recognition.face_encodings(personne5_image)[0]
+  temperatureenmemoire5= 667
+  print("p5 : Antoine Warlet a comme temperature favorite :",temperatureenmemoire5,"°C \n")
+
 
 
   engine.say("Pour quitter le mode détection veuillez sélectionner la fenetre et appuyer sur la lettre 'Q'")
   engine.runAndWait()
 
-    # Création des champs de données avec visages, noms et temperaturse favorites 
+    # Création des champs de données avec visages, noms et temperatures favorites 
   known_face_encodings = [
       personne1_face_encoding,
       personne2_face_encoding,
       personne3_face_encoding,
-      personne4_face_encoding
+      personne4_face_encoding,
+      personne5_face_encoding
     ]
   known_face_names = [
       "Matheo Costa",
       "Orcan Og",
       "Matheo Pereira",
-      "Anissa Ait-Chadi"
+      "Anissa Ait-Chadi",
+      "Antoine Warlet"
   ]
 
   temppref =[
       temperatureenmemoire1,
       temperatureenmemoire2,
       temperatureenmemoire3,
-      temperatureenmemoire4   
+      temperatureenmemoire4,
+      temperatureenmemoire5,
   ]
 
     # Initialisation de variables utiles au fonctionnement
