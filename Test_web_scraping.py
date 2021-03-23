@@ -210,19 +210,24 @@ def detection():
 #programme principal
 creationbasededonnées()
 iaquiparle()
-print(" 1 = Date et heure \n 2 = prévisions météo  \n 3 = réglage automatique de la température \n Tout autre caractere = quitter")
+print(" 1 = Date et heure \n 2 = prévisions météo  \n 3 = réglage automatique de la température \n exit = quitter")
 while 1 : #menu
     menu= str(input('Veuillez saisir le chiffre correspondant a la fonction souhaitée \n'))
     if menu == '1' :
         DetH()
     elif menu == '2' : 
-        print("Les différentes caractéristiques : \n 1 : Température(ressentie) \n 2 : rien \n 3 : Vent moyen en km/h \n 4 : Plus forte rafale en km/h \n 5 : Pression en hPa \n 6 : pluie sous 3 h \n")
+        print("\n_______________________________________\n Les différentes caractéristiques : \n 1 : Température(ressentie) \n 2 : rien \n 3 : Vent moyen en km/h \n 4 : Plus forte rafale en km/h \n 5 : Pression en hPa \n 6 : pluie sous 3 h\n_______________________________________\n")
         lecteurinfo()
     elif menu == '3' : 
         detection()
-       
-    else :
+    elif menu == 'exit' :
         print("Merci de m'avoir utilisé, aurevoir")
         engine.say("Merci de m'avoir utilisé, aurevoir PS: Matheo est le plus BG je le kiff")
         engine.runAndWait()
         break
+    else :
+        print("Caractère non reconnu")
+        engine.say("Veuillez saisir un caractère valide")
+        engine.runAndWait()
+            
+    
