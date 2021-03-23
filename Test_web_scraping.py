@@ -39,8 +39,8 @@ def lecteurinfo() :                 #prevision méteo
     engine.say("Veuillez saisir l'heure")
     engine.runAndWait()
     b= str(input('Veuillez saisir l heure sous format 0h (Commence a 1h et incrémenté de 3):\n'))
-    #a.encode('cp1252')  #encodage dans le meme format que le fichier csv (on peut voir l encodage avec le print en commentaire plus en bas)
-    #b.encode('cp1252')
+    a.encode('cp1252')  #encodage dans le meme format que le fichier csv (on peut voir l encodage avec le print en commentaire plus en bas)
+    b.encode('cp1252')
 
     with open('info_meteo.csv', newline='') as  read_obj:  #ouverture du fichier en mode lecture seule avec parametres personalisés
         csv.register_dialect('custom', delimiter=' ',doublequote=True, quoting=csv.QUOTE_NONE, escapechar=' ')  # création des parametres personalisés (consulter doc pour plus d info)
