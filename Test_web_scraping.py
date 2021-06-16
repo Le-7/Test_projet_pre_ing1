@@ -222,7 +222,7 @@ while 1 : #menu
         detection()
     elif menu == 'exit' :
         print("Merci de m'avoir utilisé, aurevoir")
-        engine.say("Merci de m'avoir utilisé, aurevoir PS: Matheo est le plus BG je le kiff")
+        engine.say("Merci de m'avoir utilisé, aurevoir.")
         engine.runAndWait()
         break
     else :
